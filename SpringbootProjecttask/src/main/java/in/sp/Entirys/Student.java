@@ -1,15 +1,17 @@
 package in.sp.Entirys;
 
 import jakarta.persistence.*;
-
 import java.util.HashSet;
-import java.util.*;
+import java.util.Objects;
+import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Student {
     @Id
-   
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String address;
 
@@ -18,51 +20,63 @@ public class Student {
         name = "student_subject",
         joinColumns = @JoinColumn(name = "student_id"),
         inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    @JsonManagedReference
     private Set<Subject> subjects = new HashSet<>();
 
-	public Long getId() {
-		return id;
-	}
+    public Student() {}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Student(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Set<Subject> getSubjects() {
-		return subjects;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setSubjects(Set<Subject> subjects) {
-		this.subjects = subjects;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	@Override
-	public String toString() {
-		return "Student [id=" + id + ", name=" + name + ", address=" + address + "]";
-	}
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
 
-	public Student() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+    }
 
-    
+    @Override
+    public String toString() {
+        return "Student [id=" + id + ", name=" + name + ", address=" + address + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        Student other = (Student) o;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
-
-
